@@ -1,0 +1,7 @@
+{
+  "name": "carCare",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
