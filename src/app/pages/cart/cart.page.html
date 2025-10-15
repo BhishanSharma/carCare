@@ -1,0 +1,128 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Shopping Cart</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="clearCart()" *ngIf="cartItems.length > 0">
+        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="cart-content">
+  <!-- Empty Cart State -->
+  <div class="empty-cart" *ngIf="cartItems.length === 0">
+    <div class="empty-icon">
+      <ion-icon name="cart-outline"></ion-icon>
+    </div>
+    <h2>Your Cart is Empty</h2>
+    <p>Add some products to get started!</p>
+    <ion-button class="shop-button" (click)="continueShopping()">
+      <ion-icon name="storefront-outline" slot="start"></ion-icon>
+      Start Shopping
+    </ion-button>
+  </div>
+
+  <!-- Cart Items -->
+  <div class="cart-container" *ngIf="cartItems.length > 0">
+    <div class="cart-items">
+      <div class="cart-item" *ngFor="let item of cartItems">
+        <div class="item-image">
+          <img [src]="item.image" [alt]="item.name">
+        </div>
+        
+        <div class="item-details">
+          <h3 class="item-name">{{ item.name }}</h3>
+          <p class="item-meta" *ngIf="item.carType">
+            <ion-icon name="car-outline"></ion-icon>
+            {{ item.carType }}
+          </p>
+          <p class="item-meta" *ngIf="item.brand">
+            <ion-icon name="pricetag-outline"></ion-icon>
+            {{ item.brand }}
+          </p>
+          <div class="item-price-row">
+            <span class="item-price">₹{{ item.price | number:'1.0-0' }}</span>
+            <span class="item-total">₹{{ (item.price * item.quantity) | number:'1.0-0' }}</span>
+          </div>
+        </div>
+
+        <div class="item-actions">
+          <ion-button 
+            fill="clear" 
+            size="small" 
+            class="delete-button"
+            (click)="removeItem(item.id)">
+            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+          
+          <div class="quantity-controls">
+            <ion-button 
+              fill="clear" 
+              size="small"
+              (click)="decreaseQuantity(item.id)"
+              [disabled]="item.quantity <= 1">
+              <ion-icon name="remove-circle" slot="icon-only"></ion-icon>
+            </ion-button>
+            <span class="quantity">{{ item.quantity }}</span>
+            <ion-button 
+              fill="clear" 
+              size="small"
+              (click)="increaseQuantity(item.id)">
+              <ion-icon name="add-circle" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="cart-summary">
+      <h3 class="summary-title">Order Summary</h3>
+      
+      <div class="summary-row">
+        <span>Subtotal ({{ totalItems }} items)</span>
+        <span>₹{{ subtotal | number:'1.0-0' }}</span>
+      </div>
+      
+      <div class="summary-row">
+        <span>Shipping</span>
+        <span class="free-text">FREE</span>
+      </div>
+      
+      <div class="summary-row">
+        <span>Tax (18% GST)</span>
+        <span>₹{{ tax | number:'1.0-0' }}</span>
+      </div>
+      
+      <div class="divider"></div>
+      
+      <div class="summary-row total-row">
+        <span>Total</span>
+        <span>₹{{ total | number:'1.0-0' }}</span>
+      </div>
+
+      <ion-button 
+        expand="block" 
+        class="checkout-button"
+        (click)="proceedToCheckout()">
+        Proceed to Checkout
+        <ion-icon name="arrow-forward" slot="end"></ion-icon>
+      </ion-button>
+
+      <ion-button 
+        expand="block" 
+        fill="outline"
+        class="continue-button"
+        (click)="continueShopping()">
+        <ion-icon name="arrow-back" slot="start"></ion-icon>
+        Continue Shopping
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

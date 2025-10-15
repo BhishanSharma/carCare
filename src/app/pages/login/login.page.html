@@ -1,0 +1,82 @@
+<ion-content [fullscreen]="true" class="login-content">
+  <div class="background-gradient"></div>
+  <div class="car-overlay"></div>
+  
+  <div class="login-container">
+    <div class="logo-section">
+      <ion-icon name="car-sport" class="app-logo"></ion-icon>
+      <h1 class="app-title">CareCar</h1>
+    </div>
+
+    <div class="form-card">
+      <h2 class="form-title">Welcome Back</h2>
+      <p class="form-subtitle">Sign in to continue</p>
+
+      <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+        <ion-item lines="none" class="custom-input">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input 
+            type="email" 
+            placeholder="Email Address"
+            [(ngModel)]="email"
+            name="email"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="custom-input">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input 
+            [type]="showPassword ? 'text' : 'password'" 
+            placeholder="Password"
+            [(ngModel)]="password"
+            name="password"
+            required>
+          </ion-input>
+          <ion-icon 
+            [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" 
+            slot="end"
+            (click)="togglePassword()"
+            class="eye-icon">
+          </ion-icon>
+        </ion-item>
+
+        <div class="forgot-section">
+          <ion-text color="primary" class="forgot-link">Forgot Password?</ion-text>
+        </div>
+
+        <ion-button 
+          expand="block" 
+          type="submit"
+          class="login-button"
+          [disabled]="!loginForm.form.valid">
+          Sign In
+          <ion-icon name="arrow-forward" slot="end"></ion-icon>
+        </ion-button>
+      </form>
+
+      <div class="divider">
+        <span>or continue with</span>
+      </div>
+
+      <div class="social-buttons">
+        <ion-button fill="outline" class="social-btn">
+          <ion-icon name="logo-google"></ion-icon>
+        </ion-button>
+        <ion-button fill="outline" class="social-btn">
+          <ion-icon name="logo-apple"></ion-icon>
+        </ion-button>
+        <ion-button fill="outline" class="social-btn">
+          <ion-icon name="logo-facebook"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="signup-section">
+        <ion-text>Don't have an account? </ion-text>
+        <ion-text color="primary" class="signup-link" (click)="goToSignup()">
+          <strong>Sign Up</strong>
+        </ion-text>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -35,3 +35,34 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/* Hide all scrollbars globally */
+* {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+
+  &::-webkit-scrollbar {
+    display: none !important; /* Chrome, Safari, Opera */
+    width: 0 !important;
+    height: 0 !important;
+  }
+}
+
+ion-content {
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.scroll-content,
+ion-list,
+ion-grid,
+.scrollable {
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}

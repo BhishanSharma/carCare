@@ -1,0 +1,137 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ carType || 'Products' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openCart()">
+        <ion-icon name="cart-outline" slot="icon-only"></ion-icon>
+        <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="filter-scroll">
+      <ion-chip 
+        [outline]="selectedFilter !== 'all'"
+        [color]="selectedFilter === 'all' ? 'primary' : 'medium'"
+        (click)="filterProducts('all')">
+        <ion-label>All Products</ion-label>
+      </ion-chip>
+      <ion-chip 
+        [outline]="selectedFilter !== 'oils'"
+        [color]="selectedFilter === 'oils' ? 'primary' : 'medium'"
+        (click)="filterProducts('oils')">
+        <ion-icon name="water"></ion-icon>
+        <ion-label>Oils & Fluids</ion-label>
+      </ion-chip>
+      <ion-chip 
+        [outline]="selectedFilter !== 'cleaning'"
+        [color]="selectedFilter === 'cleaning' ? 'primary' : 'medium'"
+        (click)="filterProducts('cleaning')">
+        <ion-icon name="sparkles"></ion-icon>
+        <ion-label>Cleaning</ion-label>
+      </ion-chip>
+      <ion-chip 
+        [outline]="selectedFilter !== 'accessories'"
+        [color]="selectedFilter === 'accessories' ? 'primary' : 'medium'"
+        (click)="filterProducts('accessories')">
+        <ion-icon name="construct"></ion-icon>
+        <ion-label>Accessories</ion-label>
+      </ion-chip>
+      <ion-chip 
+        [outline]="selectedFilter !== 'parts'"
+        [color]="selectedFilter === 'parts' ? 'primary' : 'medium'"
+        (click)="filterProducts('parts')">
+        <ion-icon name="settings"></ion-icon>
+        <ion-label>Parts</ion-label>
+      </ion-chip>
+    </div>
+  </div>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="products-content">
+  <!-- Search and Sort -->
+  <div class="search-sort-section">
+    <div class="search-box">
+      <ion-icon name="search-outline"></ion-icon>
+      <input 
+        type="text" 
+        placeholder="Search products..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()">
+    </div>
+    <ion-button fill="clear" class="sort-button" (click)="toggleSort()">
+      <ion-icon name="swap-vertical" slot="icon-only"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid" *ngIf="filteredProducts.length > 0">
+    <div 
+      *ngFor="let product of filteredProducts; let i = index" 
+      class="product-card"
+      [style.animation-delay]="i * 0.05 + 's'">
+      
+      <div class="product-image">
+        <img [src]="product.image" [alt]="product.name">
+        <div class="product-badge" *ngIf="product.discount > 0">
+          -{{ product.discount }}%
+        </div>
+        <ion-button 
+          fill="clear" 
+          class="wishlist-btn"
+          (click)="toggleWishlist(product)">
+          <ion-icon 
+            [name]="product.isWishlisted ? 'heart' : 'heart-outline'"
+            [class.wishlisted]="product.isWishlisted">
+          </ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="product-info">
+        <p class="product-category">{{ product.category }}</p>
+        <h3 class="product-name">{{ product.name }}</h3>
+        
+        <div class="rating">
+          <ion-icon name="star" *ngFor="let star of [1,2,3,4,5]" 
+            [class.filled]="star <= product.rating">
+          </ion-icon>
+          <span class="rating-text">({{ product.reviews }})</span>
+        </div>
+
+        <div class="price-row">
+          <div class="prices">
+            <span class="current-price">₹{{ product.price | number:'1.0-0' }}</span>
+            <span class="original-price" *ngIf="product.originalPrice">
+              ₹{{ product.originalPrice | number:'1.0-0' }}
+            </span>
+          </div>
+          
+          <ion-button 
+            class="add-cart-btn" 
+            size="small"
+            (click)="addToCart(product)"
+            [disabled]="isInCart(product.id)">
+            <ion-icon 
+              [name]="isInCart(product.id) ? 'checkmark' : 'cart-outline'" 
+              slot="icon-only">
+            </ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="filteredProducts.length === 0">
+    <ion-icon name="search-outline"></ion-icon>
+    <h3>No Products Found</h3>
+    <p>Try adjusting your filters or search query</p>
+  </div>
+</ion-content>

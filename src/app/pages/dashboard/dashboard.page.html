@@ -1,0 +1,158 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="custom-toolbar">
+    <div class="header-content">
+      <div class="user-greeting">
+        <div class="greeting-text">
+          <p class="greeting">Good {{ getGreeting() }}!</p>
+          <h2 class="username">Welcome Back</h2>
+        </div>
+      </div>
+      <div class="header-actions">
+        <ion-button fill="clear" class="icon-button" (click)="openCart()">
+          <ion-icon name="cart-outline"></ion-icon>
+          <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+        </ion-button>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="dashboard-content">
+  <div class="content-wrapper">
+    <!-- Search Bar -->
+    <div class="search-section">
+      <div class="search-container">
+        <ion-icon name="search-outline" class="search-icon"></ion-icon>
+        <input 
+          type="text" 
+          placeholder="Search for your car brand..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearch()"
+          class="search-input">
+        <ion-icon name="options-outline" class="filter-icon"></ion-icon>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-section">
+      <div class="stat-card stat-card-1">
+        <ion-icon name="car-sport" class="stat-icon"></ion-icon>
+        <div class="stat-info">
+          <p class="stat-value">150+</p>
+          <p class="stat-label">Car Brands</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card-2">
+        <ion-icon name="cube" class="stat-icon"></ion-icon>
+        <div class="stat-info">
+          <p class="stat-value">5000+</p>
+          <p class="stat-label">Products</p>
+        </div>
+      </div>
+      <div class="stat-card stat-card-3">
+        <ion-icon name="star" class="stat-icon"></ion-icon>
+        <div class="stat-info">
+          <p class="stat-value">4.8</p>
+          <p class="stat-label">Rating</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Header -->
+    <div class="section-header">
+      <h2 class="section-title">Select Your Car Type</h2>
+      <ion-text class="view-all">View All</ion-text>
+    </div>
+
+    <!-- Car Type Categories -->
+    <div class="categories-grid">
+      <div 
+        *ngFor="let car of filteredCars; let i = index" 
+        class="car-card"
+        [style.animation-delay]="i * 0.1 + 's'">
+        <div class="card-gradient" [style.background]="car.gradient"></div>
+        <div class="card-content" (click)="selectCarType(car)">
+          <div class="card-icon">
+            <ion-icon [name]="car.icon"></ion-icon>
+          </div>
+          <h3 class="card-title">{{ car.name }}</h3>
+          <p class="card-description">{{ car.description }}</p>
+          <div class="card-footer">
+            <span class="product-count">
+              <ion-icon name="cube-outline"></ion-icon>
+              {{ car.productCount }} products
+            </span>
+            <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
+          </div>
+        </div>
+        <ion-button 
+          class="quick-add-btn" 
+          size="small"
+          (click)="viewProducts(car); $event.stopPropagation()">
+          <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
+        </ion-button>
+        <div class="card-shine"></div>
+      </div>
+    </div>
+
+    <!-- Popular Brands Section -->
+    <div class="section-header" style="margin-top: 40px;">
+      <h2 class="section-title">Popular Brands</h2>
+      <ion-text class="view-all">See All</ion-text>
+    </div>
+
+    <div class="brands-slider">
+      <div 
+        *ngFor="let brand of popularBrands" 
+        class="brand-item"
+        (click)="selectBrand(brand)">
+        <div class="brand-logo">
+          <ion-icon [name]="brand.icon"></ion-icon>
+        </div>
+        <p class="brand-name">{{ brand.name }}</p>
+      </div>
+    </div>
+
+ <!-- Featured Banner -->
+    <div class="featured-banner">
+      <div class="banner-content">
+        <div class="banner-badge">
+          <ion-icon name="flash"></ion-icon>
+          <span>Limited Offer</span>
+        </div>
+        <h3 class="banner-title">Get 30% OFF</h3>
+        <p class="banner-subtitle">On all premium car care products</p>
+        <ion-button class="banner-button" size="small">
+          Shop Now
+          <ion-icon name="arrow-forward" slot="end"></ion-icon>
+        </ion-button>
+      </div>
+      <div class="banner-image">
+        <ion-icon name="gift"></ion-icon>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
+
+<!-- Bottom Navigation -->
+<ion-footer class="ion-no-border">
+  <div class="bottom-nav">
+    <div class="nav-item active">
+      <ion-icon name="home"></ion-icon>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" (click)="goToCategories()">
+      <ion-icon name="grid"></ion-icon>
+      <span>Categories</span>
+    </div>
+    <div class="nav-item" (click)="openCart()">
+      <ion-icon name="cart"></ion-icon>
+      <span>Cart</span>
+    </div>
+    <div class="nav-item" (click)="goToProfile()">
+      <ion-icon name="person"></ion-icon>
+      <span>Profile</span>
+    </div>
+  </div>
+</ion-footer>
