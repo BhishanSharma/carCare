@@ -1,13 +1,220 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar class="custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Profile</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="editProfile()">
+        <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="profile-content">
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="header-bg"></div>
+    <div class="profile-info">
+      <div class="avatar-container">
+        <ion-avatar class="profile-avatar">
+          <img src="https://i.pravatar.cc/150?img=33" alt="Profile">
+        </ion-avatar>
+        <ion-button class="camera-btn" fill="clear" size="small">
+          <ion-icon name="camera" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+      <h2 class="user-name">John Doe</h2>
+      <p class="user-email">john.doe@example.com</p>
+      <div class="stats-row">
+        <div class="stat-item">
+          <p class="stat-value">24</p>
+          <p class="stat-label">Orders</p>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <p class="stat-value">12</p>
+          <p class="stat-label">Wishlist</p>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <p class="stat-value">₹45K</p>
+          <p class="stat-label">Spent</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Sections -->
+  <div class="profile-sections">
+    <!-- Account Section -->
+    <div class="section">
+      <h3 class="section-title">Account</h3>
+      <div class="menu-list">
+        <div class="menu-item" (click)="navigateTo('personal-info')">
+          <div class="menu-icon-wrapper purple">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">Personal Information</p>
+            <p class="menu-subtitle">Name, Email, Phone</p>
+          </div>
+          <ion-icon name="chevron-forward" class="menu-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="navigateTo('addresses')">
+          <div class="menu-icon-wrapper blue">
+            <ion-icon name="location-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">My Addresses</p>
+            <p class="menu-subtitle">Manage delivery addresses</p>
+          </div>
+          <ion-icon name="chevron-forward" class="menu-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="navigateTo('payment')">
+          <div class="menu-icon-wrapper green">
+            <ion-icon name="card-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">Payment Methods</p>
+            <p class="menu-subtitle">Manage saved cards</p>
+          </div>
+          <ion-icon name="chevron-forward" class="menu-arrow"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orders Section -->
+    <div class="section">
+      <h3 class="section-title">Orders & Purchases</h3>
+      <div class="menu-list">
+        <div class="menu-item" (click)="navigateTo('orders')">
+          <div class="menu-icon-wrapper orange">
+            <ion-icon name="receipt-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">My Orders</p>
+            <p class="menu-subtitle">Track and view orders</p>
+          </div>
+          <ion-icon name="chevron-forward" class="menu-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="navigateTo('wishlist')">
+          <div class="menu-icon-wrapper pink">
+            <ion-icon name="heart-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">Wishlist</p>
+            <p class="menu-subtitle">Your favorite products</p>
+          </div>
+          <ion-icon name="chevron-forward" class="menu-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="navigateTo('reviews')">
+          <div class="menu-icon-wrapper yellow">
+            <ion-icon name="star-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">My Reviews</p>
+            <p class="menu-subtitle">Products you reviewed</p>
+          </div>
+          <ion-icon name="chevron-forward" class="menu-arrow"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Section -->
+    <div class="section">
+      <h3 class="section-title">Settings</h3>
+      <div class="menu-list">
+        <div class="menu-item" (click)="navigateTo('notifications')">
+          <div class="menu-icon-wrapper teal">
+            <ion-icon name="notifications-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">Notifications</p>
+            <p class="menu-subtitle">Manage notifications</p>
+          </div>
+          <ion-toggle [(ngModel)]="notificationsEnabled" slot="end"></ion-toggle>
+        </div>
+
+        <div class="menu-item" (click)="navigateTo('language')">
+          <div class="menu-icon-wrapper indigo">
+            <ion-icon name="language-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">Language</p>
+            <p class="menu-subtitle">English</p>
+          </div>
+          <ion-icon name="chevron-forward" class="menu-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="toggleDarkMode()">
+          <div class="menu-icon-wrapper dark">
+            <ion-icon name="moon-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">Dark Mode</p>
+            <p class="menu-subtitle">Toggle dark theme</p>
+          </div>
+          <ion-toggle [(ngModel)]="darkModeEnabled" slot="end"></ion-toggle>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support Section -->
+    <div class="section">
+      <h3 class="section-title">Support</h3>
+      <div class="menu-list">
+        <div class="menu-item" (click)="navigateTo('help')">
+          <div class="menu-icon-wrapper cyan">
+            <ion-icon name="help-circle-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">Help Center</p>
+            <p class="menu-subtitle">FAQs and support</p>
+          </div>
+          <ion-icon name="chevron-forward" class="menu-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="navigateTo('contact')">
+          <div class="menu-icon-wrapper lime">
+            <ion-icon name="chatbubbles-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">Contact Us</p>
+            <p class="menu-subtitle">Get in touch</p>
+          </div>
+          <ion-icon name="chevron-forward" class="menu-arrow"></ion-icon>
+        </div>
+
+        <div class="menu-item" (click)="navigateTo('about')">
+          <div class="menu-icon-wrapper amber">
+            <ion-icon name="information-circle-outline"></ion-icon>
+          </div>
+          <div class="menu-content">
+            <p class="menu-title">About App</p>
+            <p class="menu-subtitle">Version 1.0.0</p>
+          </div>
+          <ion-icon name="chevron-forward" class="menu-arrow"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout Button -->
+    <div class="logout-section">
+      <ion-button 
+        expand="block" 
+        class="logout-button"
+        (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Logout
+      </ion-button>
+    </div>
+  </div>
 </ion-content>

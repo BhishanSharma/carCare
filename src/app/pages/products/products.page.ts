@@ -73,37 +73,87 @@ export class ProductsPage implements OnInit, OnDestroy {
 
   generateProducts(): Product[] {
     const categories = [
-      { name: 'oils', label: 'Oils & Fluids' },
-      { name: 'cleaning', label: 'Cleaning' },
-      { name: 'accessories', label: 'Accessories' },
-      { name: 'parts', label: 'Parts' }
+      { 
+        name: 'oils', 
+        label: 'Oils & Fluids',
+        products: [
+          'Engine Oil 5W-30',
+          'Synthetic Motor Oil',
+          'Brake Fluid DOT 4',
+          'Coolant Antifreeze',
+          'Transmission Fluid',
+          'Power Steering Fluid'
+        ]
+      },
+      { 
+        name: 'cleaning', 
+        label: 'Cleaning',
+        products: [
+          'Car Shampoo Wash',
+          'Interior Cleaner',
+          'Glass Cleaner Spray',
+          'Tire Shine Polish',
+          'Dashboard Polish',
+          'Microfiber Cloth Set'
+        ]
+      },
+      { 
+        name: 'accessories', 
+        label: 'Accessories',
+        products: [
+          'Car Air Freshener',
+          'Phone Holder Mount',
+          'Seat Cover Set',
+          'Floor Mat Premium',
+          'Steering Wheel Cover',
+          'Sunshade Protector'
+        ]
+      },
+      { 
+        name: 'parts', 
+        label: 'Parts',
+        products: [
+          'Brake Pads Set',
+          'Air Filter Element',
+          'Wiper Blades Pair',
+          'Spark Plugs Set',
+          'Oil Filter Premium',
+          'Battery 12V 65Ah'
+        ]
+      }
     ];
 
     const products: Product[] = [];
     let productId = 1;
 
-    categories.forEach(category => {
-      for (let i = 0; i < 6; i++) {
+    // Product images from Picsum (reliable image service)
+    const imageIds = [237, 431, 244, 250, 367, 423, 180, 112, 
+                      193, 225, 257, 292, 325, 357, 390, 418, 
+                      452, 485, 516, 547, 577, 607, 637, 667];
+
+    categories.forEach((category, catIndex) => {
+      category.products.forEach((productName, i) => {
         const hasDiscount = Math.random() > 0.6;
         const discount = hasDiscount ? Math.floor(Math.random() * 30) + 10 : 0;
         const originalPrice = Math.floor(Math.random() * 3000) + 500;
         const price = hasDiscount ? Math.floor(originalPrice * (1 - discount / 100)) : originalPrice;
+        const imageIndex = (catIndex * 6 + i) % imageIds.length;
 
         products.push({
           id: productId++,
-          name: `${this.carType || 'Premium'} ${category.label} Product ${i + 1}`,
+          name: `${this.carType ? this.carType + ' ' : ''}${productName}`,
           price: price,
           originalPrice: hasDiscount ? originalPrice : undefined,
           discount: discount,
-          image: `https://images.unsplash.com/photo-${1486262715619 + productId}?w=400&h=300&fit=crop`,
+          image: `https://picsum.photos/seed/${imageIds[imageIndex]}/400/300`,
           category: category.label,
-          rating: Math.floor(Math.random() * 2) + 3, // 3-5 stars
+          rating: Math.floor(Math.random() * 2) + 4, // 4-5 stars
           reviews: Math.floor(Math.random() * 200) + 10,
-          carType: this.carType || 'All Cars',
+          carType: this.carType || 'Universal',
           brand: this.brand || 'Premium Auto',
           isWishlisted: false
         });
-      }
+      });
     });
 
     return products;
