@@ -78,19 +78,43 @@ export class SignupPage implements OnInit {
     }
 
     if (this.fullName && this.email && this.phone && this.password && this.acceptTerms) {
-      // Here you would typically call your authentication service
-      const toast = await this.toastController.create({
-        message: 'Account created successfully!',
-        duration: 2000,
-        color: 'success',
-        position: 'top'
-      });
-      await toast.present();
-      
-      // Navigate to dashboard
-      setTimeout(() => {
-        this.router.navigate(['/dashboard']);
-      }, 500);
+      // Save user data to localStorage
+      const userData = {
+        fullName: this.fullName,
+        email: this.email,
+        phone: this.phone,
+        password: this.password, // In production, never store plain passwords!
+        createdAt: new Date().toISOString(),
+        isLoggedIn: true
+      };
+
+      try {
+        // Save to localStorage
+        localStorage.setItem('userData', JSON.stringify(userData));
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userEmail', this.email);
+
+        const toast = await this.toastController.create({
+          message: 'Account created successfully!',
+          duration: 2000,
+          color: 'success',
+          position: 'top'
+        });
+        await toast.present();
+        
+        // Navigate to dashboard
+        setTimeout(() => {
+          this.router.navigate(['/dashboard'], { replaceUrl: true });
+        }, 500);
+      } catch (error) {
+        const toast = await this.toastController.create({
+          message: 'Error creating account. Please try again.',
+          duration: 2000,
+          color: 'danger',
+          position: 'top'
+        });
+        await toast.present();
+      }
     }
   }
 

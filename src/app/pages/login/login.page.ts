@@ -19,6 +19,11 @@ export class LoginPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    // Check if user is already logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+      this.router.navigate(['/dashboard'], { replaceUrl: true });
+    }
   }
 
   togglePassword() {
@@ -27,18 +32,65 @@ export class LoginPage implements OnInit {
 
   async onLogin() {
     if (this.email && this.password) {
-      // Here you would typically call your authentication service
-      // For now, we'll simulate a successful login
+      try {
+        // Get stored user data
+        const storedUserData = localStorage.getItem('userData');
+        
+        if (storedUserData) {
+          const userData = JSON.parse(storedUserData);
+          
+          // Verify credentials
+          if (userData.email === this.email && userData.password === this.password) {
+            // Successful login
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            const toast = await this.toastController.create({
+              message: `Welcome back, ${userData.fullName}!`,
+              duration: 2000,
+              color: 'success',
+              position: 'top'
+            });
+            await toast.present();
+            
+            // Navigate to dashboard
+            this.router.navigate(['/dashboard'], { replaceUrl: true });
+          } else {
+            // Invalid credentials
+            const toast = await this.toastController.create({
+              message: 'Invalid email or password!',
+              duration: 2000,
+              color: 'danger',
+              position: 'top'
+            });
+            await toast.present();
+          }
+        } else {
+          // No user found
+          const toast = await this.toastController.create({
+            message: 'No account found. Please sign up first!',
+            duration: 2000,
+            color: 'warning',
+            position: 'top'
+          });
+          await toast.present();
+        }
+      } catch (error) {
+        const toast = await this.toastController.create({
+          message: 'Error logging in. Please try again.',
+          duration: 2000,
+          color: 'danger',
+          position: 'top'
+        });
+        await toast.present();
+      }
+    } else {
       const toast = await this.toastController.create({
-        message: 'Login successful!',
+        message: 'Please enter email and password!',
         duration: 2000,
-        color: 'success',
+        color: 'warning',
         position: 'top'
       });
       await toast.present();
-      
-      // Navigate to dashboard
-      this.router.navigate(['/dashboard']);
     }
   }
 

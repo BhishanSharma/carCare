@@ -77,48 +77,43 @@ export class ProductsPage implements OnInit, OnDestroy {
         name: 'oils', 
         label: 'Oils & Fluids',
         products: [
-          'Engine Oil 5W-30',
-          'Synthetic Motor Oil',
-          'Brake Fluid DOT 4',
-          'Coolant Antifreeze',
-          'Transmission Fluid',
-          'Power Steering Fluid'
+          { name: 'Engine Oil 5W-30', image: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=400&h=300&fit=crop' },
+          { name: 'Brake Fluid DOT 4', image: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=400&h=300&fit=crop' },
+          { name: 'Transmission Fluid', image: 'https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=400&h=300&fit=crop' },
+          { name: 'Power Steering Fluid', image: 'https://images.unsplash.com/photo-1610647752706-3bb12232b3ab?w=400&h=300&fit=crop' }
         ]
       },
       { 
         name: 'cleaning', 
         label: 'Cleaning',
         products: [
-          'Car Shampoo Wash',
-          'Interior Cleaner',
-          'Glass Cleaner Spray',
-          'Tire Shine Polish',
-          'Dashboard Polish',
-          'Microfiber Cloth Set'
+          { name: 'Car Shampoo Wash', image: 'https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=400&h=300&fit=crop' },
+          { name: 'Interior Cleaner', image: 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=400&h=300&fit=crop' },
+          { name: 'Glass Cleaner Spray', image: 'https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400&h=300&fit=crop' },
+          { name: 'Dashboard Polish', image: 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=400&h=300&fit=crop' },
+          { name: 'Microfiber Cloth Set', image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400&h=300&fit=crop' }
         ]
       },
       { 
         name: 'accessories', 
         label: 'Accessories',
         products: [
-          'Car Air Freshener',
-          'Phone Holder Mount',
-          'Seat Cover Set',
-          'Floor Mat Premium',
-          'Steering Wheel Cover',
-          'Sunshade Protector'
+          { name: 'Phone Holder Mount', image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&h=300&fit=crop' },
+          { name: 'Seat Cover Set', image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&h=300&fit=crop' },
+          { name: 'Floor Mat Premium', image: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=400&h=300&fit=crop' },
+          { name: 'Steering Wheel Cover', image: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=400&h=300&fit=crop' },
+          { name: 'Sunshade Protector', image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=300&fit=crop' }
         ]
       },
       { 
         name: 'parts', 
         label: 'Parts',
         products: [
-          'Brake Pads Set',
-          'Air Filter Element',
-          'Wiper Blades Pair',
-          'Spark Plugs Set',
-          'Oil Filter Premium',
-          'Battery 12V 65Ah'
+          { name: 'Brake Pads Set', image: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=400&h=300&fit=crop' },
+          { name: 'Air Filter Element', image: 'https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=400&h=300&fit=crop' },
+          { name: 'Wiper Blades Pair', image: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=400&h=300&fit=crop' },
+          { name: 'Oil Filter Premium', image: 'https://images.unsplash.com/photo-1610647752706-3bb12232b3ab?w=400&h=300&fit=crop' },
+          { name: 'Battery 12V 65Ah', image: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=400&h=300&fit=crop' }
         ]
       }
     ];
@@ -126,26 +121,20 @@ export class ProductsPage implements OnInit, OnDestroy {
     const products: Product[] = [];
     let productId = 1;
 
-    // Product images from Picsum (reliable image service)
-    const imageIds = [237, 431, 244, 250, 367, 423, 180, 112, 
-                      193, 225, 257, 292, 325, 357, 390, 418, 
-                      452, 485, 516, 547, 577, 607, 637, 667];
-
-    categories.forEach((category, catIndex) => {
-      category.products.forEach((productName, i) => {
+    categories.forEach((category) => {
+      category.products.forEach((product) => {
         const hasDiscount = Math.random() > 0.6;
         const discount = hasDiscount ? Math.floor(Math.random() * 30) + 10 : 0;
         const originalPrice = Math.floor(Math.random() * 3000) + 500;
         const price = hasDiscount ? Math.floor(originalPrice * (1 - discount / 100)) : originalPrice;
-        const imageIndex = (catIndex * 6 + i) % imageIds.length;
 
         products.push({
           id: productId++,
-          name: `${this.carType ? this.carType + ' ' : ''}${productName}`,
+          name: `${this.carType ? this.carType + ' ' : ''}${product.name}`,
           price: price,
           originalPrice: hasDiscount ? originalPrice : undefined,
           discount: discount,
-          image: `https://picsum.photos/seed/${imageIds[imageIndex]}/400/300`,
+          image: product.image,
           category: category.label,
           rating: Math.floor(Math.random() * 2) + 4, // 4-5 stars
           reviews: Math.floor(Math.random() * 200) + 10,

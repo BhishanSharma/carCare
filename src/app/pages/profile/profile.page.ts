@@ -11,6 +11,11 @@ import { NavController, AlertController, ToastController } from '@ionic/angular'
 export class ProfilePage implements OnInit {
   notificationsEnabled: boolean = true;
   darkModeEnabled: boolean = false;
+  
+  // User data
+  userName: string = 'John Doe';
+  userEmail: string = 'john.doe@example.com';
+  userPhone: string = '+91 1234567890';
 
   constructor(
     private router: Router,
@@ -20,6 +25,21 @@ export class ProfilePage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadUserData();
+  }
+
+  loadUserData() {
+    try {
+      const storedUserData = localStorage.getItem('userData');
+      if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        this.userName = userData.fullName || 'John Doe';
+        this.userEmail = userData.email || 'john.doe@example.com';
+        this.userPhone = userData.phone || '+91 1234567890';
+      }
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
   }
 
   goBack() {
@@ -74,19 +94,23 @@ export class ProfilePage implements OnInit {
   }
 
   async performLogout() {
-    // Clear any stored data here
-    // For example: localStorage.clear() - but we're not using localStorage
-    
-    const toast = await this.toastController.create({
-      message: 'Logged out successfully',
-      duration: 2000,
-      color: 'success',
-      position: 'top'
-    });
-    await toast.present();
+    try {
+      // Clear login status but keep user data for future login
+      localStorage.setItem('isLoggedIn', 'false');
+      
+      const toast = await this.toastController.create({
+        message: 'Logged out successfully',
+        duration: 2000,
+        color: 'success',
+        position: 'top'
+      });
+      await toast.present();
 
-    // Navigate to login page
-    this.router.navigate(['/login'], { replaceUrl: true });
+      // Navigate to login page
+      this.router.navigate(['/login'], { replaceUrl: true });
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   }
 
   async showToast(message: string, color: string) {
